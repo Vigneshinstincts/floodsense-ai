@@ -91,4 +91,36 @@ INSERT INTO flood_zones (area_name, locality, lat, lon, radius_km, base_risk_sco
 ('Silk Board Junction', 'BTM Layout', 12.9172, 77.6228, 0.8, 75, 'High', 'poor'),
 ('Bellandur Lake Area', 'Bellandur', 12.9258, 77.6649, 1.2, 80, 'High', 'poor'),
 ('Marathahalli Bridge', 'Marathahalli', 12.9569, 77.7011, 0.7, 65, 'High', 'poor'),
-('KR Puram Underpass', 'K R Puram', 13.0088,
+('KR Puram Underpass', 'K R Puram', 13.0088, 77.6964, 0.6, 70, 'High', 'poor'),
+('Yelahanka Lake Bed', 'Yelahanka', 13.1007, 77.5963, 1.0, 60, 'Medium', 'moderate'),
+('Hebbal Flyover', 'Hebbal', 13.0358, 77.5970, 0.5, 55, 'Medium', 'moderate'),
+('Koramangala Sewage Drain', 'Koramangala', 12.9352, 77.6245, 0.6, 58, 'Medium', 'moderate'),
+('Mahadevapura', 'Mahadevapura', 12.9908, 77.6960, 0.7, 62, 'Medium', 'poor'),
+('Rajajinagar Underpass', 'Rajajinagar', 12.9911, 77.5554, 0.5, 50, 'Medium', 'moderate'),
+('Indiranagar 100ft Road', 'Indiranagar', 12.9719, 77.6412, 0.4, 35, 'Low', 'good'),
+('Jayanagar 4th Block', 'Jayanagar', 12.9254, 77.5832, 0.4, 30, 'Low', 'good'),
+('Whitefield Main Road', 'Whitefield', 12.9698, 77.7500, 0.5, 45, 'Medium', 'moderate'),
+('Electronic City Underpass', 'Electronic City', 12.8452, 77.6602, 0.6, 68, 'High', 'poor'),
+('Banashankari Bus Stand', 'Banashankari', 12.9255, 77.5468, 0.4, 32, 'Low', 'good'),
+('Domlur Flyover', 'Domlur', 12.9610, 77.6387, 0.5, 48, 'Medium', 'moderate');
+
+-- ============================================================
+-- SEED DATA — BMTC sample bus routes (approximate fares)
+-- ============================================================
+INSERT INTO bus_routes (route_number, route_name, origin_stop, dest_stop, origin_lat, origin_lon, dest_lat, dest_lon, base_fare_inr, per_km_fare_inr) VALUES
+('500D', 'Silk Board - Hebbal', 'Silk Board', 'Hebbal', 12.9172, 77.6228, 13.0358, 77.5970, 10, 1.8),
+('356', 'Majestic - Whitefield', 'Majestic Bus Stand', 'Whitefield', 12.9767, 77.5713, 12.9698, 77.7500, 10, 1.6),
+('201', 'Jayanagar - Hebbal', 'Jayanagar', 'Hebbal', 12.9254, 77.5832, 13.0358, 77.5970, 8, 1.7),
+('500K', 'Banashankari - KR Puram', 'Banashankari', 'KR Puram', 12.9255, 77.5468, 13.0088, 77.6964, 12, 1.7),
+('210', 'Koramangala - Yelahanka', 'Koramangala', 'Yelahanka', 12.9352, 77.6245, 13.1007, 77.5963, 14, 1.8),
+('335E', 'Electronic City - Marathahalli', 'Electronic City', 'Marathahalli', 12.8452, 77.6602, 12.9569, 77.7011, 12, 1.7),
+('401K', 'Indiranagar - Domlur', 'Indiranagar', 'Domlur', 12.9719, 77.6412, 12.9610, 77.6387, 6, 1.5);
+
+-- ============================================================
+-- SEED DATA — Cab fare configuration (Bengaluru market rates, approx)
+-- ============================================================
+INSERT INTO fare_config (cab_type, base_fare_inr, per_km_inr, per_min_inr, surge_low_multiplier, surge_medium_multiplier, surge_high_multiplier, min_fare_inr) VALUES
+('auto', 30, 15, 1.5, 1.0, 1.25, 1.6, 30),
+('mini', 50, 12, 1.8, 1.0, 1.3, 1.8, 60),
+('sedan', 65, 14, 2.0, 1.0, 1.3, 1.8, 80),
+('suv', 90, 18, 2.5, 1.0, 1.35, 1.9, 120);
