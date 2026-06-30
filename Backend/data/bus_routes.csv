@@ -1,0 +1,8 @@
+route_number,route_name,origin_stop,dest_stop,origin_lat,origin_lon,dest_lat,dest_lon,base_fare_inr,per_km_fare_inr
+500D,Silk Board - Hebbal,Silk Board,Hebbal,12.9172,77.6228,13.0358,77.5970,10,1.8
+356,Majestic - Whitefield,Majestic Bus Stand,Whitefield,12.9767,77.5713,12.9698,77.7500,10,1.6
+201,Jayanagar - Hebbal,Jayanagar,Hebbal,12.9254,77.5832,13.0358,77.5970,8,1.7
+500K,Banashankari - KR Puram,Banashankari,KR Puram,12.9255,77.5468,13.0088,77.6964,12,1.7
+210,Koramangala - Yelahanka,Koramangala,Yelahanka,12.9352,77.6245,13.1007,77.5963,14,1.8
+335E,Electronic City - Marathahalli,Electronic City,Marathahalli,12.8452,77.6602,12.9569,77.7011,12,1.7
+401K,Indiranagar - Domlur,Indiranagar,Domlur,12.9719,77.6412,12.9610,77.6387,6,1.5

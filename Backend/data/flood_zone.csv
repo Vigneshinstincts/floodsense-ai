@@ -1,0 +1,16 @@
+area_name,locality,lat,lon,radius_km,base_risk_score,risk_level,drainage_quality
+Silk Board Junction,BTM Layout,12.9172,77.6228,0.8,75,High,poor
+Bellandur Lake Area,Bellandur,12.9258,77.6649,1.2,80,High,poor
+Marathahalli Bridge,Marathahalli,12.9569,77.7011,0.7,65,High,poor
+KR Puram Underpass,K R Puram,13.0088,77.6964,0.6,70,High,poor
+Yelahanka Lake Bed,Yelahanka,13.1007,77.5963,1.0,60,Medium,moderate
+Hebbal Flyover,Hebbal,13.0358,77.5970,0.5,55,Medium,moderate
+Koramangala Sewage Drain,Koramangala,12.9352,77.6245,0.6,58,Medium,moderate
+Mahadevapura,Mahadevapura,12.9908,77.6960,0.7,62,Medium,poor
+Rajajinagar Underpass,Rajajinagar,12.9911,77.5554,0.5,50,Medium,moderate
+Indiranagar 100ft Road,Indiranagar,12.9719,77.6412,0.4,35,Low,good
+Jayanagar 4th Block,Jayanagar,12.9254,77.5832,0.4,30,Low,good
+Whitefield Main Road,Whitefield,12.9698,77.7500,0.5,45,Medium,moderate
+Electronic City Underpass,Electronic City,12.8452,77.6602,0.6,68,High,poor
+Banashankari Bus Stand,Banashankari,12.9255,77.5468,0.4,32,Low,good
+Domlur Flyover,Domlur,12.9610,77.6387,0.5,48,Medium,moderate
