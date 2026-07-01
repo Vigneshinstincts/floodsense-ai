@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FloodSense AI — Bengaluru Smart Commute</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/animations.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ─── NAVBAR ─────────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <span class="brand-icon">🌧️</span>
+        <span class="brand-name">FloodSense <span class="brand-ai">AI</span></span>
+      </div>
+      <div class="nav-badge">Bengaluru Smart Commute</div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ───────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-tag">🚦 Real-time flood & traffic intelligence</div>
+      <h1 class="hero-title">
+        Navigate Bengaluru<br />
+        <span class="gradient-text">Safely in the Rain</span>
+      </h1>
+      <p class="hero-subtitle">
+        Get the safest, fastest and most affordable route — updated live
+        with flood risk, weather and traffic data.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── SEARCH CARD ────────────────────────────────────── -->
+  <section class="search-section">
+    <div class="container">
+      <div class="search-card glass-card">
+        <div class="search-card-header">
+          <h2>Plan Your Route</h2>
+          <p>Enter your origin and destination within Bengaluru</p>
+        </div>
+
+        <div class="search-form">
+          <div class="input-group">
+            <div class="input-wrapper">
+              <span class="input-icon">📍</span>
+              <input
+                type="text"
+                id="origin-input"
+                class="location-input"
+                placeholder="Current location (e.g. Silk Board)"
+                autocomplete="off"
+              />
+              <div class="suggestions-dropdown" id="origin-suggestions"></div>
+            </div>
+
+            <div class="swap-btn-wrapper">
+              <button class="swap-btn" id="swap-btn" title="Swap locations">⇅</button>
+            </div>
+
+            <div class="input-wrapper">
+              <span class="input-icon">🏁</span>
+              <input
+                type="text"
+                id="dest-input"
+                class="location-input"
+                placeholder="Destination (e.g. Hebbal)"
+                autocomplete="off"
+              />
+              <div class="suggestions-dropdown" id="dest-suggestions"></div>
+            </div>
+          </div>
+
+          <button class="search-btn" id="search-btn">
+            <span class="btn-text">Find Safest Route</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </div>
+
+        <div class="quick-routes">
+          <span class="quick-label">Quick routes:</span>
+          <button class="quick-chip" data-origin="Silk Board" data-dest="Hebbal" data-olat="12.9172" data-olon="77.6228" data-dlat="13.0358" data-dlon="77.5970">Silk Board → Hebbal</button>
+          <button class="quick-chip" data-origin="Majestic" data-dest="Whitefield" data-olat="12.9767" data-olon="77.5713" data-dlat="12.9698" data-dlon="77.7500">Majestic → Whitefield</button>
+          <button class="quick-chip" data-origin="Koramangala" data-dest="Yelahanka" data-olat="12.9352" data-olon="77.6245" data-dlat="13.1007" data-dlon="77.5963">Koramangala → Yelahanka</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LOADING ────────────────────────────────────────── -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-card">
+      <div class="loading-spinner"></div>
+      <p class="loading-text" id="loading-text">Fetching live data...</p>
+      <div class="loading-steps">
+        <div class="loading-step" id="ls-weather">🌦️ Checking weather...</div>
+        <div class="loading-step" id="ls-flood">🚨 Analysing flood risk...</div>
+        <div class="loading-step" id="ls-route">🗺️ Computing safest route...</div>
+        <div class="loading-step" id="ls-fare">💰 Estimating fares...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── RESULTS ────────────────────────────────────────── -->
+  <section class="results-section hidden" id="results-section">
+    <div class="container">
+
+      <!-- Route Summary Bar -->
+      <div class="route-summary-bar glass-card" id="route-summary">
+        <div class="summary-item">
+          <span class="summary-icon">📍</span>
+          <div>
+            <div class="summary-label">From</div>
+            <div class="summary-value" id="summary-origin">—</div>
+          </div>
+        </div>
+        <div class="summary-arrow">→</div>
+        <div class="summary-item">
+          <span class="summary-icon">🏁</span>
+          <div>
+            <div class="summary-label">To</div>
+            <div class="summary-value" id="summary-dest">—</div>
+          </div>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-stat">
+          <div class="summary-stat-value" id="summary-distance">—</div>
+          <div class="summary-stat-label">km</div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-stat-value" id="summary-duration">—</div>
+          <div class="summary-stat-label">min</div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-stat-value" id="summary-safety">—</div>
+          <div class="summary-stat-label">safety</div>
+        </div>
+      </div>
+
+      <!-- Cards Grid -->
+      <div class="cards-grid">
+
+        <!-- Weather Card -->
+        <div class="info-card glass-card" id="weather-card">
+          <div class="card-header">
+            <span class="card-icon">🌦️</span>
+            <h3>Current Weather</h3>
+          </div>
+          <div class="weather-main">
+            <div class="weather-temp" id="weather-temp">—</div>
+            <div class="weather-desc" id="weather-desc">—</div>
+          </div>
+          <div class="weather-stats">
+            <div class="weather-stat">
+              <span class="wstat-icon">💧</span>
+              <span class="wstat-label">Humidity</span>
+              <span class="wstat-value" id="weather-humidity">—</span>
+            </div>
+            <div class="weather-stat">
+              <span class="wstat-icon">💨</span>
+              <span class="wstat-label">Wind</span>
+              <span class="wstat-value" id="weather-wind">—</span>
+            </div>
+            <div class="weather-stat">
+              <span class="wstat-icon">🌧️</span>
+              <span class="wstat-label">Rain (1h)</span>
+              <span class="wstat-value" id="weather-rain">—</span>
+            </div>
+            <div class="weather-stat">
+              <span class="wstat-icon">👁️</span>
+              <span class="wstat-label">Visibility</span>
+              <span class="wstat-value" id="weather-visibility">—</span>
+            </div>
+          </div>
+          <div class="forecast-strip" id="forecast-strip"></div>
+        </div>
+
+        <!-- Flood Risk Card -->
+        <div class="info-card glass-card" id="flood-card">
+          <div class="card-header">
+            <span class="card-icon">🚨</span>
+            <h3>Flood Risk</h3>
+          </div>
+          <div class="risk-display">
+            <div class="risk-badge" id="risk-badge">—</div>
+            <div class="risk-score-wrapper">
+              <div class="risk-score-bar">
+                <div class="risk-score-fill" id="risk-score-fill"></div>
+              </div>
+              <span class="risk-score-label" id="risk-score-label">Score: —</span>
+            </div>
+          </div>
+          <div class="risk-advisory" id="risk-advisory">—</div>
+          <div class="affected-zones" id="affected-zones"></div>
+        </div>
+
+        <!-- Traffic Card -->
+        <div class="info-card glass-card" id="traffic-card">
+          <div class="card-header">
+            <span class="card-icon">🚦</span>
+            <h3>Traffic Status</h3>
+          </div>
+          <div class="traffic-display">
+            <div class="traffic-badge" id="traffic-badge">—</div>
+          </div>
+          <div class="warnings-list" id="warnings-list"></div>
+        </div>
+
+        <!-- Fare Card -->
+        <div class="info-card glass-card" id="fare-card">
+          <div class="card-header">
+            <span class="card-icon">💰</span>
+            <h3>Estimated Fare</h3>
+          </div>
+          <div class="fare-options">
+            <div class="fare-option" id="fare-bus">
+              <div class="fare-mode">🚌 Bus</div>
+              <div class="fare-price" id="fare-bus-price">—</div>
+              <div class="fare-note" id="fare-bus-route">—</div>
+            </div>
+            <div class="fare-divider"></div>
+            <div class="fare-option" id="fare-cab">
+              <div class="fare-mode">🚕 Cab</div>
+              <div class="fare-price" id="fare-cab-price">—</div>
+              <div class="fare-note" id="fare-surge-note">—</div>
+            </div>
+          </div>
+          <div class="fare-note-bottom" id="fare-note-bottom">—</div>
+        </div>
+
+      </div>
+
+      <!-- Map -->
+      <div class="map-card glass-card">
+        <div class="card-header">
+          <span class="card-icon">🗺️</span>
+          <h3>Route Map</h3>
+          <div class="map-legend">
+            <span class="legend-item"><span class="legend-dot blue"></span> Route</span>
+            <span class="legend-item"><span class="legend-dot red"></span> High Risk</span>
+            <span class="legend-item"><span class="legend-dot yellow"></span> Medium Risk</span>
+          </div>
+        </div>
+        <div id="map"></div>
+      </div>
+
+      <!-- Turn by Turn -->
+      <div class="steps-card glass-card" id="steps-card">
+        <div class="card-header">
+          <span class="card-icon">🧭</span>
+          <h3>Turn-by-Turn Directions</h3>
+        </div>
+        <div class="steps-list" id="steps-list"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── ERROR ──────────────────────────────────────────── -->
+  <div class="error-toast hidden" id="error-toast">
+    <span class="error-icon">⚠️</span>
+    <span class="error-msg" id="error-msg">Something went wrong.</span>
+    <button class="error-close" onclick="hideError()">✕</button>
+  </div>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="container">
+      <p>🌧️ FloodSense AI · Bengaluru Smart Commute Assistant · Built for safer travel</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/map.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

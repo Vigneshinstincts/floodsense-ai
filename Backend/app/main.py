@@ -21,7 +21,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="FloodSense AI API",
-    description="Bengaluru Smart Commute Assistant — safe routes during floods",
+    description="Bengaluru Smart Commute Assistant",
     version="1.0.0",
     lifespan=lifespan,
     docs_url="/docs",
@@ -30,13 +30,12 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_ORIGIN, "http://127.0.0.1:5500"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Register API routers
 app.include_router(routes.router, prefix="/api", tags=["routes"])
 app.include_router(weather.router, prefix="/api", tags=["weather"])
 app.include_router(flood.router, prefix="/api", tags=["flood"])

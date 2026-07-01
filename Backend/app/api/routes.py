@@ -33,10 +33,26 @@ async def get_safe_route(
     """
     try:
         # 1. Fetch weather at origin
-        weather, forecast, location_name = await get_weather_data(
-            payload.origin_lat, payload.origin_lon
-        )
-        rain_mm = weather.rain_1h_mm or weather.rain_3h_mm
+        try:
+            weather, forecast, location_name = await get_weather_data(
+                payload.origin_lat, payload.origin_lon
+            )
+            rain_mm = weather.rain_1h_mm or weather.rain_3h_mm
+        except Exception as e:
+            logger.warning(f"Weather fetch failed, using defaults: {e}")
+            from app.models.schemas import WeatherData
+            weather = WeatherData(
+                temperature_c=28.0,
+                feels_like_c=30.0,
+                humidity_pct=75,
+                description="Weather data unavailable",
+                icon_code="01d",
+                wind_speed_kmh=10.0,
+                rain_1h_mm=0.0,
+                rain_3h_mm=0.0,
+                visibility_km=10.0,
+            )
+            rain_mm = 0.0
 
         # 2. Get route with flood/traffic analysis
         route = await get_route(

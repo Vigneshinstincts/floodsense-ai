@@ -1,0 +1,26 @@
+/* Traffic badge colors */
+.traffic-clear     { background: rgba(34,197,94,0.15);  color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+.traffic-moderate  { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+.traffic-heavy     { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+.traffic-standstill{ background: rgba(239,68,68,0.25);  color: #ef4444; border: 1px solid rgba(239,68,68,0.5); }
+
+/* Risk badge colors */
+.risk-low    { background: rgba(34,197,94,0.15);  color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+.risk-medium { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+.risk-high   { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .input-group { flex-direction: column; }
+  .swap-btn-wrapper { transform: rotate(90deg); }
+  .cards-grid { grid-template-columns: 1fr; }
+  .route-summary-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .fare-options { flex-direction: column; }
+  .fare-divider { width: 100%; height: 1px; }
+  #map { height: 300px; }
+}
