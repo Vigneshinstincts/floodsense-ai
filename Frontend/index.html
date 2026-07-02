@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script defer src="/_vercel/insights/script.js"></script>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -62,7 +63,10 @@
               />
               <div class="suggestions-dropdown" id="origin-suggestions"></div>
             </div>
-
+            <button class="location-btn" id="locate-btn" onclick="trackUserLocation()" title="Use my location">
+              📍 Use My Location
+            </button>
+              
             <div class="swap-btn-wrapper">
               <button class="swap-btn" id="swap-btn" title="Swap locations">⇅</button>
             </div>
