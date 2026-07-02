@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://floodsense-ai-4pux.onrender.com';
 
 async function fetchRoute(originLat, originLon, destLat, destLon, originName, destName) {
   const response = await fetch(`${API_BASE}/api/route`, {
