@@ -1,10 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from sqlalchemy.orm import Session
 from fastapi import Depends
 
-from app.models.schemas import (
-    RouteRequest, RouteResponse, ErrorResponse
-)
+from app.models.schemas import RouteRequest, RouteResponse, ErrorResponse
 from app.models.db_models import RouteAuditLog
 from app.services.route_service import get_route
 from app.services.weather_service import get_weather_data
@@ -12,6 +10,7 @@ from app.services.flood_service import calculate_flood_risk
 from app.services.fare_service import calculate_fare
 from app.database import get_db
 from app.utils.logger import get_logger
+from app.main import limiter
 
 router = APIRouter()
 logger = get_logger(__name__)
@@ -23,16 +22,13 @@ logger = get_logger(__name__)
     responses={400: {"model": ErrorResponse}, 503: {"model": ErrorResponse}},
     summary="Get safest route with weather, flood risk, and fare",
 )
+@limiter.limit("10/minute")
 async def get_safe_route(
+    request: Request,
     payload: RouteRequest,
     db: Session = Depends(get_db),
 ):
-    """
-    Core endpoint — returns the safest route from origin to destination
-    with live weather, flood risk, traffic status, and fare estimates.
-    """
     try:
-        # 1. Fetch weather at origin
         try:
             weather, forecast, location_name = await get_weather_data(
                 payload.origin_lat, payload.origin_lon
@@ -54,19 +50,16 @@ async def get_safe_route(
             )
             rain_mm = 0.0
 
-        # 2. Get route with flood/traffic analysis
         route = await get_route(
             payload.origin_lat, payload.origin_lon,
             payload.dest_lat, payload.dest_lon,
             rain_mm=rain_mm,
         )
 
-        # 3. Get flood risk at origin
         flood_risk = calculate_flood_risk(
             payload.origin_lat, payload.origin_lon, rain_mm
         )
 
-        # 4. Calculate fare
         fare = calculate_fare(
             payload.origin_lat, payload.origin_lon,
             payload.dest_lat, payload.dest_lon,
@@ -74,7 +67,6 @@ async def get_safe_route(
             flood_risk.level,
         )
 
-        # 5. Save audit log
         try:
             log = RouteAuditLog(
                 origin_name=payload.origin_name,
