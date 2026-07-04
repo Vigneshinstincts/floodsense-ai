@@ -264,9 +264,14 @@ function setupAutocomplete(inputId, suggestionsId, onSelect) {
       return;
     }
 
-    const matches = BENGALURU_LOCATIONS.filter(loc =>
+    const startsWith = BENGALURU_LOCATIONS.filter(loc =>
+      loc.name.toLowerCase().startsWith(query)
+    );
+    const contains = BENGALURU_LOCATIONS.filter(loc =>
+      !loc.name.toLowerCase().startsWith(query) &&
       loc.name.toLowerCase().includes(query)
-    ).slice(0, 5);
+    );
+    const matches = [...startsWith, ...contains].slice(0, 8);
 
     if (matches.length > 0) {
       matches.forEach(loc => {
@@ -348,15 +353,13 @@ document.getElementById('swap-btn').addEventListener('click', () => {
 
 // ─── Search Handler ────────────────────────────────────────
 async function handleSearch() {
+  if (!originCoords && window.originCoords) {
+    originCoords = window.originCoords;
+  }
   if (!originCoords || !destCoords) {
-    // Check window.originCoords as fallback (set by geolocation)
-    if (window.originCoords) {
-      originCoords = window.originCoords;
-    }
-    if (!originCoords || !destCoords) {
-      showError('Please select both origin and destination from the suggestions.');
-      return;
-    }
+    showError('Please select both origin and destination from the suggestions.');
+    return;
+  }
   }
   if (originCoords.name === destCoords.name) {
     showError('Origin and destination cannot be the same.');
