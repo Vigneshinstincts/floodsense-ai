@@ -93,55 +93,44 @@ function trackUserLocation() {
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
 
+      // Set global originCoords so search works
+      window.originCoords = {
+        name: 'My Location',
+        lat: lat,
+        lon: lon,
+      };
+
+      // Also set the module-level variable
+      if (typeof originCoords !== 'undefined') {
+        originCoords = window.originCoords;
+      }
+
+      document.getElementById('origin-input').value = 'My Location';
+
       if (!mapInstance) initMap(lat, lon);
 
-      // User location marker — blue pulsing
       const userIcon = L.divIcon({
         className: '',
-        html: `
-          <div style="position:relative">
-            <div style="
-              background:#3b82f6;
-              width:14px;height:14px;
-              border-radius:50%;
-              border:3px solid white;
-              box-shadow:0 2px 8px rgba(0,0,0,0.5);
-              position:relative;z-index:2
-            "></div>
-            <div style="
-              background:rgba(59,130,246,0.3);
-              width:30px;height:30px;
-              border-radius:50%;
-              position:absolute;
-              top:-8px;left:-8px;
-              z-index:1;
-              animation: pulse 1.5s infinite
-            "></div>
-          </div>`,
+        html: `<div style="position:relative">
+          <div style="background:#3b82f6;width:14px;height:14px;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.5);position:relative;z-index:2"></div>
+          <div style="background:rgba(59,130,246,0.3);width:30px;height:30px;border-radius:50%;position:absolute;top:-8px;left:-8px;z-index:1;"></div>
+        </div>`,
         iconSize: [30, 30],
         iconAnchor: [15, 15],
       });
 
+      markersLayer.clearLayers();
       L.marker([lat, lon], { icon: userIcon })
         .bindPopup('<b>📍 You are here</b>')
         .addTo(markersLayer)
         .openPopup();
 
       mapInstance.setView([lat, lon], 14);
-
-      // Auto-fill origin input
-      document.getElementById('origin-input').value = 'My Location';
-      window._userLat = lat;
-      window._userLon = lon;
-      originCoords = {
-        name: 'My Location'
-        lat: lat,
-        lon: lon,
-      };
     },
     (error) => {
       alert('Could not get your location. Please enter it manually.');
       console.error('Geolocation error:', error);
-    }
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
   );
 }

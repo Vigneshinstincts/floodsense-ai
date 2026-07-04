@@ -349,8 +349,14 @@ document.getElementById('swap-btn').addEventListener('click', () => {
 // ─── Search Handler ────────────────────────────────────────
 async function handleSearch() {
   if (!originCoords || !destCoords) {
-    showError('Please select both origin and destination from the suggestions.');
-    return;
+    // Check window.originCoords as fallback (set by geolocation)
+    if (window.originCoords) {
+      originCoords = window.originCoords;
+    }
+    if (!originCoords || !destCoords) {
+      showError('Please select both origin and destination from the suggestions.');
+      return;
+    }
   }
   if (originCoords.name === destCoords.name) {
     showError('Origin and destination cannot be the same.');
@@ -372,6 +378,7 @@ async function handleSearch() {
     showError(err.message || 'Failed to fetch route. Please try again.');
     console.error(err);
   }
+}
 }
 
 document.getElementById('search-btn').addEventListener('click', handleSearch);
