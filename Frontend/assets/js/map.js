@@ -133,6 +133,11 @@ function trackUserLocation() {
       document.getElementById('origin-input').value = 'My Location';
       window._userLat = lat;
       window._userLon = lon;
+      originCoords = {
+        name: 'My Location'
+        lat: lat,
+        lon: lon,
+      };
     },
     (error) => {
       alert('Could not get your location. Please enter it manually.');

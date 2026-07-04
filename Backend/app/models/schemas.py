@@ -84,12 +84,11 @@ class FareData(BaseModel):
 
 
 # ─── Request models ───────────────────────────────────────────────────────────
-
 class RouteRequest(BaseModel):
-    origin_lat: float = Field(..., ge=12.7, le=13.3, description="Bengaluru latitude range")
-    origin_lon: float = Field(..., ge=77.3, le=77.9, description="Bengaluru longitude range")
-    dest_lat: float = Field(..., ge=12.7, le=13.3)
-    dest_lon: float = Field(..., ge=77.3, le=77.9)
+   origin_lat: float = Field(..., ge=12.5, le=13.5, description="Bengaluru latitude range")
+origin_lon: float = Field(..., ge=77.0, le=78.2, description="Bengaluru longitude range")
+dest_lat: float = Field(..., ge=12.5, le=13.5)
+dest_lon: float = Field(..., ge=77.0, le=78.2)
     origin_name: str = Field(..., min_length=2, max_length=200)
     dest_name: str = Field(..., min_length=2, max_length=200)
 
@@ -100,13 +99,13 @@ class RouteRequest(BaseModel):
 
 
 class WeatherRequest(BaseModel):
-    lat: float = Field(..., ge=12.7, le=13.3)
-    lon: float = Field(..., ge=77.3, le=77.9)
+    lat: float = Field(..., ge=12.5, le=13.5)
+    lon: float = Field(..., ge=77.0, le=78.2)
 
 
 class FloodRiskRequest(BaseModel):
-    lat: float = Field(..., ge=12.7, le=13.3)
-    lon: float = Field(..., ge=77.3, le=77.9)
+    lat: float = Field(..., ge=12.5, le=13.5)
+    lon: float = Field(..., ge=77.0, le=78.2)
     rain_mm: float = Field(default=0.0, ge=0)
 
 
