@@ -85,10 +85,10 @@ class FareData(BaseModel):
 
 # ─── Request models ───────────────────────────────────────────────────────────
 class RouteRequest(BaseModel):
-   origin_lat: float = Field(..., ge=12.5, le=13.5, description="Bengaluru latitude range")
-origin_lon: float = Field(..., ge=77.0, le=78.2, description="Bengaluru longitude range")
-dest_lat: float = Field(..., ge=12.5, le=13.5)
-dest_lon: float = Field(..., ge=77.0, le=78.2)
+    origin_lat: float = Field(..., ge=12.5, le=13.5, description="Bengaluru latitude range")
+    origin_lon: float = Field(..., ge=77.0, le=78.2, description="Bengaluru longitude range")
+    dest_lat: float = Field(..., ge=12.5, le=13.5)
+    dest_lon: float = Field(..., ge=77.0, le=78.2)
     origin_name: str = Field(..., min_length=2, max_length=200)
     dest_name: str = Field(..., min_length=2, max_length=200)
 
